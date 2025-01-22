@@ -48,6 +48,7 @@ while user is not "q":
         print("######## VALID COMMANDS! ########\n")
         print(CYAN + "[q] " + RESET + "\t \t \t quit EASY PLANNER")
         print(CYAN + "[add <name> <**limit>]"  + RESET + " \t add a new task (optional time limit in days)")
+        print(CYAN + "[check <number>]" + RESET + " \t check off an entry using its number")
         print("\n#################################\n")
 
     # add new task command
@@ -55,14 +56,21 @@ while user is not "q":
         user_split = user.split(" ")
         # simple version (1 arg, no time limit)
         if len(user_split) == 2:
-            new_entry = [user_split[1], "Incomplete", str(datetime.utcnow()), "No time limit"]
+            new_entry = [user_split[1], "Incomplete", datetime.utcnow().strftime("%Y-%m-%d"), "No time limit"]
             entries.append(new_entry)
         # complex version (2 arg, time limit)
         elif len(user_split) == 3:
-            new_entry = [user_split[1], "Incomplete", str(datetime.utcnow()), str(datetime.utcnow() +
-                                                                    timedelta(days=int(user_split[2])))]
+            new_entry = [user_split[1], "Incomplete", datetime.utcnow().strftime("%Y-%m-%d"), (datetime.utcnow() +
+                                                                    timedelta(days=int(user_split[2]))).strftime("%Y-%m-%d")]
             entries.append(new_entry)
         # everything else is invalid
+        else:
+            print("Invalid arguments!")
+
+    if user[0:5] == "check":
+        user_split = user.split(" ")
+        if len(user_split) == 2:
+            entries[int(user_split[1]) - 1][1] = "Complete"
         else:
             print("Invalid arguments!")
 
