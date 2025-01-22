@@ -55,13 +55,16 @@ while user is not "q":
         user_split = user.split(" ")
         # simple version (1 arg, no time limit)
         if len(user_split) == 2:
-            print("1 arg command")
+            new_entry = [user_split[1], "Incomplete", str(datetime.utcnow()), "No time limit"]
+            entries.append(new_entry)
         # complex version (2 arg, time limit)
         elif len(user_split) == 3:
-            print("2 arg command")
+            new_entry = [user_split[1], "Incomplete", str(datetime.utcnow()), str(datetime.utcnow() +
+                                                                    timedelta(days=int(user_split[2])))]
+            entries.append(new_entry)
         # everything else is invalid
         else:
-            print("invalid command")
+            print("Invalid arguments!")
 
     # output tasks every time
     inc = 0
@@ -72,7 +75,8 @@ while user is not "q":
         else:
             complete_marker = " "
         inc = inc + 1
-        print("[" + complete_marker + "] " + str(inc) + ". " + YELLOW + entry[0] + RESET + " - " + entry[2])
+        print("[" + complete_marker + "] " + str(inc) + ". " + YELLOW + entry[0] + RESET + " - " + entry[2] +
+              " (" + entry[3] + ")")
 
     user = input("> ")
 
