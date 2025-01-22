@@ -5,6 +5,7 @@ import calendar
 
 # ansii codes
 BOLD = "\033[1m"
+BLINK = "\033[5m"
 RESET = "\033[0m"
 YELLOW = "\033[33m"
 
@@ -34,6 +35,13 @@ user = ""
 
 while user is not "q":
 
+    if user.lower() == "help" or user.lower() == "man" or user.lower() == "h" or user.lower() == "docs":
+        for i in range(20):
+            print("\n")
+        print("######## VALID COMMANDS! ########\n")
+        print("[q] - quit EASY PLANNER")
+        print("\n#################################\n")
+
     inc = 0
     complete_marker = " "
     for entry in entries:
@@ -44,4 +52,4 @@ while user is not "q":
         inc = inc + 1
         print("[" + complete_marker + "] " + str(inc) + ". " + YELLOW + entry[0] + RESET + " - " + entry[2])
 
-    user = input(">")
+    user = input("" + BLINK + "> " + RESET)
