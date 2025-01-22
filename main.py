@@ -8,6 +8,7 @@ BOLD = "\033[1m"
 BLINK = "\033[5m"
 RESET = "\033[0m"
 YELLOW = "\033[33m"
+CYAN = "\033[36m"
 
 # data assignment
 data = read_in("log.txt")
@@ -31,17 +32,38 @@ print("#### WELCOME TO EASY PLANNER ####\n")
 print("Good " + time_of_day + "! Your tasks are listed below.\n")
 print("#################################\n")
 
-user = ""
+user = "init"
 
+# input loop
 while user is not "q":
 
+    if user is not "init":
+        for i in range(20):
+            print("\n")
+
+    # user help command
     if user.lower() == "help" or user.lower() == "man" or user.lower() == "h" or user.lower() == "docs":
         for i in range(20):
             print("\n")
         print("######## VALID COMMANDS! ########\n")
-        print("[q] - quit EASY PLANNER")
+        print(CYAN + "[q] " + RESET + "\t \t \t quit EASY PLANNER")
+        print(CYAN + "[add <name> <**limit>]"  + RESET + " \t add a new task (optional time limit in days)")
         print("\n#################################\n")
 
+    # add new task command
+    if user[0:3] == "add":
+        user_split = user.split(" ")
+        # simple version (1 arg, no time limit)
+        if len(user_split) == 2:
+            print("1 arg command")
+        # complex version (2 arg, time limit)
+        elif len(user_split) == 3:
+            print("2 arg command")
+        # everything else is invalid
+        else:
+            print("invalid command")
+
+    # output tasks every time
     inc = 0
     complete_marker = " "
     for entry in entries:
@@ -52,4 +74,6 @@ while user is not "q":
         inc = inc + 1
         print("[" + complete_marker + "] " + str(inc) + ". " + YELLOW + entry[0] + RESET + " - " + entry[2])
 
-    user = input("" + BLINK + "> " + RESET)
+    user = input("> ")
+
+save("log.txt", tzoffset, entries)
