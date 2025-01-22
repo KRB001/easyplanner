@@ -30,7 +30,18 @@ print("#### WELCOME TO EASY PLANNER ####\n")
 print("Good " + time_of_day + "! Your tasks are listed below.\n")
 print("#################################\n")
 
-inc = 0
-for entry in entries:
-    inc = inc + 1
-    print("[" + entry[1] + "] " + str(inc) + ". " + YELLOW + entry[0] + RESET + " - " + entry[2])
+user = ""
+
+while user is not "q":
+
+    inc = 0
+    complete_marker = " "
+    for entry in entries:
+        if entry[1] == "Complete":
+            complete_marker = "X"
+        else:
+            complete_marker = " "
+        inc = inc + 1
+        print("[" + complete_marker + "] " + str(inc) + ". " + YELLOW + entry[0] + RESET + " - " + entry[2])
+
+    user = input(">")
