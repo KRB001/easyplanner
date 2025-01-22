@@ -13,10 +13,11 @@ CYAN = "\033[36m"
 # data assignment
 data = read_in("log.txt")
 tzoffset = data[0]
-entries = data[1:]
+mode = data[1]
+entries = data[2:]
 
 # set greet phrase
-curr = datetime.utcnow() + timedelta(hours=tzoffset)
+curr = datetime.now()
 time_of_day = ""
 if 0 <= curr.hour < 12:
     time_of_day = "morning"
@@ -33,6 +34,7 @@ print("Good " + time_of_day + "! Your tasks are listed below.\n")
 print("#################################\n")
 
 user = "init"
+entries_curated = []
 
 # input loop
 while user is not "q":
@@ -47,6 +49,7 @@ while user is not "q":
             print("\n")
         print("######## VALID COMMANDS! ########\n")
         print(CYAN + "[q] " + RESET + "\t \t \t quit EASY PLANNER")
+        print(CYAN + "[mode] " + RESET + "\t \t \t toggle modes (week/rolling)")
         print(CYAN + "[add <name> <**limit>]"  + RESET + " \t add a new task (optional time limit in days)")
         print(CYAN + "[check <number>]" + RESET + " \t check off an entry using its number")
         print("\n#################################\n")
@@ -56,12 +59,14 @@ while user is not "q":
         user_split = user.split(" ")
         # simple version (1 arg, no time limit)
         if len(user_split) == 2:
-            new_entry = [user_split[1], "Incomplete", datetime.utcnow().strftime("%Y-%m-%d"), "No time limit"]
+            new_entry = [user_split[1], "Incomplete", datetime.utcnow().strftime("%Y-%m-%d"), "No time limit",
+                         str(len(entries))]
             entries.append(new_entry)
         # complex version (2 arg, time limit)
         elif len(user_split) == 3:
             new_entry = [user_split[1], "Incomplete", datetime.utcnow().strftime("%Y-%m-%d"), (datetime.utcnow() +
-                                                                    timedelta(days=int(user_split[2]))).strftime("%Y-%m-%d")]
+                                                                    timedelta(days=int(user_split[2]))).strftime("%Y-%m-%d"),
+                         str(len(entries))]
             entries.append(new_entry)
         # everything else is invalid
         else:
@@ -70,14 +75,32 @@ while user is not "q":
     if user[0:5] == "check":
         user_split = user.split(" ")
         if len(user_split) == 2:
-            entries[int(user_split[1]) - 1][1] = "Complete"
+            entries[int(entries_curated[int(user_split[1]) - 1][4])][1] = "Complete"
         else:
             print("Invalid arguments!")
+
+    if user == "mode":
+        if mode == "week":
+            mode = "rolling"
+        else:
+            mode = "week"
+
+    entries_curated = []
+    if mode == "rolling":
+        for entry in entries:
+            if entry[1] == "Incomplete":
+                entries_curated.append(entry)
+    else:
+        for entry in entries:
+            if entry[3] == "No time limit":
+                entries_curated.append(entry)
+            elif datetime.strptime(entry[3], "%Y-%m-%d") <= datetime.now() + timedelta(days=7):
+                entries_curated.append(entry)
 
     # output tasks every time
     inc = 0
     complete_marker = " "
-    for entry in entries:
+    for entry in entries_curated:
         if entry[1] == "Complete":
             complete_marker = "X"
         else:
@@ -88,4 +111,4 @@ while user is not "q":
 
     user = input("> ")
 
-save("log.txt", tzoffset, entries)
+save("log.txt", tzoffset, mode, entries)
