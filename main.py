@@ -80,21 +80,32 @@ while user is not "q":
             print("Invalid arguments!")
 
     if user == "mode":
-        if mode == "week":
-            mode = "rolling"
-        else:
+        if mode == "rolling":
             mode = "week"
+            print("Switched to " + CYAN + "[week]" + RESET + " mode")
+        elif mode == "week":
+            mode = "2week"
+            print("Switched to " + CYAN + "[2 week]" + RESET + " mode")
+        else:
+            mode = "rolling"
+            print("Switched to " + CYAN + "[rolling]" + RESET + " mode")
 
     entries_curated = []
     if mode == "rolling":
         for entry in entries:
             if entry[1] == "Incomplete":
                 entries_curated.append(entry)
+    elif mode == "week":
+        for entry in entries:
+            if entry[3] == "No time limit":
+                None
+            elif datetime.now() + timedelta(days=7) >= datetime.strptime(entry[3], "%Y-%m-%d") >= datetime.now():
+                entries_curated.append(entry)
     else:
         for entry in entries:
             if entry[3] == "No time limit":
-                entries_curated.append(entry)
-            elif datetime.strptime(entry[3], "%Y-%m-%d") <= datetime.now() + timedelta(days=7):
+                None
+            elif datetime.now() + timedelta(days=14) >= datetime.strptime(entry[3], "%Y-%m-%d") >= datetime.now():
                 entries_curated.append(entry)
 
     # output tasks every time
