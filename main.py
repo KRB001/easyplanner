@@ -9,6 +9,7 @@ BLINK = "\033[5m"
 RESET = "\033[0m"
 YELLOW = "\033[33m"
 CYAN = "\033[36m"
+PURPLE = "\033[35m"
 
 # data assignment
 data = read_in("log.txt")
@@ -31,6 +32,7 @@ for i in range(20):
     print("\n")
 print("#### WELCOME TO EASY PLANNER ####\n")
 print("Good " + time_of_day + "! Your tasks are listed below.\n")
+print("The current date is: " + str(datetime.now().strftime("%Y-%m-%d")) + "\n")
 print("#################################\n")
 
 user = "init"
@@ -111,13 +113,19 @@ while user is not "q":
     # output tasks every time
     inc = 0
     complete_marker = " "
+    entry_color = YELLOW
     for entry in entries_curated:
         if entry[1] == "Complete":
             complete_marker = "X"
         else:
             complete_marker = " "
+
+        if entry[3] =="No time limit":
+            entry_color = PURPLE
+        else:
+            entry_color = YELLOW
         inc = inc + 1
-        print("[" + complete_marker + "] " + str(inc) + ". " + YELLOW + entry[0] + RESET + " - " + entry[2] +
+        print("[" + complete_marker + "] " + str(inc) + ". " + entry_color + entry[0] + RESET + " -" +
               " (" + entry[3] + ")")
 
     user = input("> ")
