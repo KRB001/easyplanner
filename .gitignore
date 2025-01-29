@@ -1,4 +1,5 @@
 .idea
 log.txt
 log_backup.txt
+old/*
 __pycache__/*
