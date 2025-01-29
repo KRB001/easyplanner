@@ -54,6 +54,7 @@ while user is not "q":
         print(CYAN + "[mode] " + RESET + "\t \t \t toggle modes (week/rolling)")
         print(CYAN + "[add <name> <**limit>]"  + RESET + " \t add a new task (optional time limit in days)")
         print(CYAN + "[check <number>]" + RESET + " \t check off an entry using its number")
+        print(CYAN + "[dump <filename>]" + RESET + " \t dump complete or old entries to an archive file")
         print("\n#################################\n")
 
     # add new task command
