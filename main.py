@@ -37,25 +37,28 @@ print("#################################\n")
 
 user = "init"
 entries_curated = []
+help_flag = False
 
 # input loop
 while user is not "q":
 
+    help_flag = False
     if user is not "init":
         for i in range(20):
             print("\n")
 
     # user help command
     if user.lower() == "help" or user.lower() == "man" or user.lower() == "h" or user.lower() == "docs":
+        help_flag = True
         for i in range(20):
             print("\n")
         print("######## VALID COMMANDS! ########\n")
         print(CYAN + "[q] " + RESET + "\t \t \t quit EASY PLANNER")
-        print(CYAN + "[mode] " + RESET + "\t \t \t toggle modes (week/rolling)")
+        print(CYAN + "[mode] " + RESET + "\t \t \t toggle modes (week/2week/rolling)")
         print(CYAN + "[add <name> <**limit>]"  + RESET + " \t add a new task (optional time limit in days)")
-        print(CYAN + "[check <number>]" + RESET + " \t check off an entry using its number")
+        print(CYAN + "[check <number>]" + RESET + " \t check off an entry using its listed number")
         print(CYAN + "[dump <filename>]" + RESET + " \t dump complete or old entries to an archive file")
-        print("\n#################################\n")
+        print("\n######### ENTER TO EXIT #########\n")
 
     # add new task command
     if user[0:3] == "add":
@@ -121,22 +124,23 @@ while user is not "q":
                 entries_curated.append(entry)
 
     # output tasks every time
-    inc = 0
-    complete_marker = " "
-    entry_color = YELLOW
-    for entry in entries_curated:
-        if entry[1] == "Complete":
-            complete_marker = "X"
-        else:
-            complete_marker = " "
+    if not help_flag:
+        inc = 0
+        complete_marker = " "
+        entry_color = YELLOW
+        for entry in entries_curated:
+            if entry[1] == "Complete":
+                complete_marker = "X"
+            else:
+                complete_marker = " "
 
-        if entry[3] =="No time limit":
-            entry_color = PURPLE
-        else:
-            entry_color = YELLOW
-        inc = inc + 1
-        print("[" + complete_marker + "] " + str(inc) + ". " + entry_color + entry[0] + RESET + " -" +
-              " (" + entry[3] + ")")
+            if entry[3] =="No time limit":
+                entry_color = PURPLE
+            else:
+                entry_color = YELLOW
+            inc = inc + 1
+            print("[" + complete_marker + "] " + str(inc) + ". " + entry_color + entry[0] + RESET + " -" +
+                  " (" + entry[3] + ")")
 
     user = input("> ")
 
