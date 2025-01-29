@@ -1,7 +1,7 @@
 # imports
 from reader import *
 from datetime import datetime, timedelta
-import calendar
+from utilities import dump
 
 # ansii codes
 BOLD = "\033[1m"
@@ -91,6 +91,15 @@ while user is not "q":
         else:
             mode = "rolling"
             print("Switched to " + CYAN + "[rolling]" + RESET + " mode")
+
+    if user[0:4] == "dump":
+        user_split = user.split(" ")
+        if len(user_split) == 2:
+            init_len = len(entries)
+            entries = dump(user_split[1], tzoffset, mode, entries)
+            print(CYAN + "Dumped " + str(init_len - len(entries)) +" finished entries to " + PURPLE + "old/" + user_split[1] + RESET)
+        else:
+            print("Invalid arguments!")
 
     entries_curated = []
     if mode == "rolling":
