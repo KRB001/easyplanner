@@ -10,6 +10,7 @@ RESET = "\033[0m"
 YELLOW = "\033[33m"
 CYAN = "\033[36m"
 PURPLE = "\033[35m"
+RED = "\033[31m"
 
 # data assignment
 data = read_in("log.txt")
@@ -114,13 +115,13 @@ while user is not "q":
         for entry in entries:
             if entry[3] == "No time limit":
                 None
-            elif datetime.now() + timedelta(days=7) >= datetime.strptime(entry[3], "%Y-%m-%d") >= datetime.now():
+            elif datetime.now() + timedelta(days=7) >= datetime.strptime(entry[3], "%Y-%m-%d") >= datetime.now() - timedelta(days=1):
                 entries_curated.append(entry)
     else:
         for entry in entries:
             if entry[3] == "No time limit":
                 None
-            elif datetime.now() + timedelta(days=14) >= datetime.strptime(entry[3], "%Y-%m-%d") >= datetime.now():
+            elif datetime.now() + timedelta(days=14) >= datetime.strptime(entry[3], "%Y-%m-%d") >= datetime.now() - timedelta(days=1):
                 entries_curated.append(entry)
 
     # output tasks every time
@@ -136,6 +137,8 @@ while user is not "q":
 
             if entry[3] =="No time limit":
                 entry_color = PURPLE
+            elif entry[3] == datetime.now().strftime("%Y-%m-%d"):
+                entry_color = RED
             else:
                 entry_color = YELLOW
             inc = inc + 1
