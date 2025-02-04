@@ -9,7 +9,7 @@ def dump(dest, tzoffset, mode, entries):
         if entry[3] == "No time limit":
             if entry[1] == "Complete":
                 finished_entries.append(entry)
-        elif datetime.now() > datetime.strptime(entry[3], "%Y-%m-%d"):
+        elif datetime.now() > datetime.strptime(entry[3], "%Y-%m-%d") + timedelta(days=1):
             finished_entries.append(entry)
         else:
             ongoing_entries.append(entry)
