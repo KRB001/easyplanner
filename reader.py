@@ -20,8 +20,9 @@ def save(filename, tzoffset, mode, entries):
             f.write(
                 str(entry[0] + "," + entry[1] + "," + entry[2] + "\n")
             )
-        elif len(entry) == 5:
+        elif len(entry) == 6:
             f.write(
-                str(entry[0] + "," + entry[1] + "," + entry[2] + "," + entry[3] + "," + entry[4] + "\n")
+                str(entry[0] + "," + entry[1] + "," + entry[2] + "," + entry[3] + ","
+                    + entry[4] + "," + entry[5] + "\n")
             )
     f.close()

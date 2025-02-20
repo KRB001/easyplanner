@@ -58,6 +58,7 @@ while user is not "q":
         print(CYAN + "[mode] " + RESET + "\t \t \t toggle modes (week/2week/rolling)")
         print(CYAN + "[add <name> <**limit>]"  + RESET + " \t add a new task (optional time limit in days)")
         print(CYAN + "[check <number>]" + RESET + " \t check off an entry using its listed number")
+        print(CYAN + "[bump <number>]" + RESET + "\t\t push an entry forward by a day")
         print(CYAN + "[dump <filename>]" + RESET + " \t dump complete or old entries to an archive file")
         print("\n######### ENTER TO EXIT #########\n")
 
@@ -67,13 +68,13 @@ while user is not "q":
         # simple version (1 arg, no time limit)
         if len(user_split) == 2:
             new_entry = [user_split[1], "Incomplete", datetime.utcnow().strftime("%Y-%m-%d"), "No time limit",
-                         str(len(entries))]
+                         str(len(entries)), str(0)]
             entries.append(new_entry)
         # complex version (2 arg, time limit)
         elif len(user_split) == 3:
             new_entry = [user_split[1], "Incomplete", datetime.utcnow().strftime("%Y-%m-%d"), (datetime.utcnow() +
                                                                     timedelta(days=int(user_split[2]))).strftime("%Y-%m-%d"),
-                         str(len(entries))]
+                         str(len(entries)), str(0)]
             entries.append(new_entry)
         # everything else is invalid
         else:
