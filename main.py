@@ -11,6 +11,8 @@ YELLOW = "\033[33m"
 CYAN = "\033[36m"
 PURPLE = "\033[35m"
 RED = "\033[31m"
+GREEN = "\033[32m"
+ORANGE = "\033[48;2;255;165;0m"
 
 # data assignment
 data = read_in("log.txt")
@@ -87,6 +89,56 @@ while user is not "q":
         else:
             print("Invalid arguments!")
 
+    if user[0:4] == "bump":
+        user_split = user.split(" ")
+        if len(user_split) == 2:
+
+            bumps = int(entries[int(entries_curated[int(user_split[1]) - 1][4])][5])
+            bumps_flag = False
+
+            if bumps >= 3:
+                print("" + RED + "#################################\n\n")
+                print("The task '"
+                      + entries[int(entries_curated[int(user_split[1]) - 1][4])][0] +
+                      "' has been bumped " + RESET + str(bumps + 1) +
+                      " times.\n" + RED + "Are you sure you want to bump again? [y/n]\n")
+                print("" + RED + "#################################\n\n" + RESET)
+
+                check = input(">")
+
+                if check == "y":
+                    bumps_flag = False
+                else:
+                    bumps_flag = True
+
+                for i in range(20):
+                    print("\n")
+
+            if not bumps_flag:
+                entry_color = GREEN
+
+                if bumps == 1:
+                    entry_color = YELLOW
+                elif bumps >= 2:
+                    entry_color = RED
+
+                print("" + entry_color)
+                print("#################################\n")
+                print("#        BUMPED ENTRY!          #\n")
+                print("#        TOTAL BUMPS: " + str(bumps + 1) + "         #\n")
+                print("#################################\n")
+                print("" + RESET)
+
+                entries[int(entries_curated[int(user_split[1]) - 1][4])][5] = str(
+                    bumps + 1
+                )
+                entries[int(entries_curated[int(user_split[1]) - 1][4])][3] = str(
+                    (datetime.strptime(entries[int(entries_curated[int(user_split[1]) - 1][4])][3], "%Y-%m-%d")
+                     + timedelta(days=1)).strftime("%Y-%m-%d")
+                )
+        else:
+            print("Invalid arguments!")
+
     if user == "mode":
         if mode == "rolling":
             mode = "week"
@@ -129,7 +181,7 @@ while user is not "q":
     if not help_flag:
         inc = 0
         complete_marker = " "
-        entry_color = YELLOW
+        entry_color = GREEN
         for entry in entries_curated:
             if entry[1] == "Complete":
                 complete_marker = "X"
@@ -140,8 +192,10 @@ while user is not "q":
                 entry_color = PURPLE
             elif entry[3] == datetime.now().strftime("%Y-%m-%d"):
                 entry_color = RED
-            else:
+            elif datetime.strptime(entry[3], "%Y-%m-%d") - timedelta(days=3) <= datetime.now():
                 entry_color = YELLOW
+            else:
+                entry_color = GREEN
             inc = inc + 1
             print("[" + complete_marker + "] " + str(inc) + ". " + entry_color + entry[0] + RESET + " -" +
                   " (" + entry[3] + ")")
