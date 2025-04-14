@@ -83,11 +83,14 @@ while user is not "q":
             print("Invalid arguments!")
 
     if user[0:5] == "check":
-        user_split = user.split(" ")
-        if len(user_split) == 2:
-            entries[int(entries_curated[int(user_split[1]) - 1][4])][1] = "Complete"
-        else:
-            print("Invalid arguments!")
+        try:
+            user_split = user.split(" ")
+            if len(user_split) == 2:
+                entries[int(entries_curated[int(user_split[1]) - 1][4])][1] = "Complete"
+            else:
+                print("Invalid arguments!")
+        except IndexError:
+            print("Entry " + user_split[1] + " does not exist!")
 
     if user[0:4] == "bump":
         user_split = user.split(" ")
@@ -181,12 +184,17 @@ while user is not "q":
     if not help_flag:
         inc = 0
         complete_marker = " "
+        bumps_marker = ""
         entry_color = GREEN
         for entry in entries_curated:
             if entry[1] == "Complete":
                 complete_marker = "X"
             else:
                 complete_marker = " "
+                
+            bumps = int(entry[5])
+            for i in range(bumps):
+            	bumps_marker = bumps_marker + "*"
 
             if entry[3] =="No time limit":
                 entry_color = PURPLE
@@ -198,7 +206,8 @@ while user is not "q":
                 entry_color = GREEN
             inc = inc + 1
             print("[" + complete_marker + "] " + str(inc) + ". " + entry_color + entry[0] + RESET + " -" +
-                  " (" + entry[3] + ")")
+                  " (" + entry[3] + ")" + bumps_marker)
+            bumps_marker = ""
 
     user = input("> ")
 
